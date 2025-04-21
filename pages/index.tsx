@@ -11,6 +11,11 @@ import cloudinary from "../utils/cloudinary";
 import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
+import React from "react";
+
+interface LogoProps {
+  className?: string;
+}
 
 const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
   const router = useRouter();
@@ -59,7 +64,6 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
         </Link>
       </nav>
     </header>
-
 
 
       <main className="mx-auto max-w-[1960px] p-4">
