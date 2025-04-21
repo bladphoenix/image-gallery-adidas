@@ -81,7 +81,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
       <footer className="p-6 text-center text-white/80 sm:p-12">
         Thank you to{" "}
         <a
-          href="https://edelsonphotography.com/"
+          href="https://vercel.app/"
           target="_blank"
           className="font-semibold hover:text-white"
           rel="noreferrer"
@@ -90,7 +90,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
         </a>
         ,{" "}
         <a
-          href="https://www.newrevmedia.com/"
+          href="https://www.cloudinary.com/"
           target="_blank"
           className="font-semibold hover:text-white"
           rel="noreferrer"
@@ -99,7 +99,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
         </a>
         , and{" "}
         <a
-          href="https://www.garysextonphotography.com/"
+          href="https://adidas.co.id/"
           target="_blank"
           className="font-semibold hover:text-white"
           rel="noreferrer"
