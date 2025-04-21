@@ -49,7 +49,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
 
     <header className="flex items-center justify-between px-6 py-4 bg-black text-white shadow-md">
       <div className="flex items-center space-x-3">
-        <Logo className="w-8 h-8" />
+        <Logo className="text-black dark:text-white" />
         <span className="text-xl font-bold">My Photo Gallery</span>
       </div>
       <nav className="space-x-4">
