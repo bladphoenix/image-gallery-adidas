@@ -13,6 +13,7 @@ const Home: NextPage = ({ currentPhoto }: { currentPhoto: ImageProps }) => {
   let index = Number(photoId);
 
   const currentPhotoUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_2560/${currentPhoto.public_id}.${currentPhoto.format}`;
+  console.log("[Client-side] Current photo URL:", currentPhotoUrl);
 
   return (
     <>
@@ -32,6 +33,8 @@ export default Home;
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const results = await getResults();
+
+  console.log("[getStaticProps] First item from Cloudinary:", results.resources[0]);
 
   let reducedResults: ImageProps[] = [];
   let i = 0;
