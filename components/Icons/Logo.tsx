@@ -1,8 +1,6 @@
-export default function Logo() { 
-  const className = "text-black dark:text-white";
+export default function Logo() {
   return (
     <svg
-      className={className}
       aria-labelledby="conf-logo-title-header"
       fill="none"
       role="img"
