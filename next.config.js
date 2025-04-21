@@ -5,7 +5,7 @@ module.exports = {
         protocol: "https",
         hostname: "res.cloudinary.com",
         port: "",
-        pathname: "/dmis60dxy/**", 
+        pathname: "/dmis60dxy/**", // ini harus sesuai subpath cloudinary-mu
         search: "",
       },
     ],
