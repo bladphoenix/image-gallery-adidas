@@ -86,7 +86,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
           className="font-semibold hover:text-white"
           rel="noreferrer"
         >
-          Josh Edelson
+          Vercel.app 
         </a>
         ,{" "}
         <a
@@ -95,7 +95,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
           className="font-semibold hover:text-white"
           rel="noreferrer"
         >
-          Jenny Morgan
+          Cloudinary
         </a>
         , and{" "}
         <a
@@ -104,7 +104,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
           className="font-semibold hover:text-white"
           rel="noreferrer"
         >
-          Gary Sexton
+          Adidas
         </a>{" "}
         for the pictures.
       </footer>
