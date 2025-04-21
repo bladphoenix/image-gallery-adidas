@@ -40,6 +40,28 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
           content="https://nextjsconf-pics.vercel.app/og-image.png"
         />
       </Head>
+
+
+    <header className="flex items-center justify-between px-6 py-4 bg-black text-white shadow-md">
+      <div className="flex items-center space-x-3">
+        <Logo className="w-8 h-8" />
+        <span className="text-xl font-bold">My Photo Gallery</span>
+      </div>
+      <nav className="space-x-4">
+        <Link href="/" className="hover:underline">
+          Home
+        </Link>
+        <Link href="https://vercel.com" target="_blank" className="hover:underline">
+          Vercel
+        </Link>
+        <Link href="https://cloudinary.com" target="_blank" className="hover:underline">
+          Cloudinary
+        </Link>
+      </nav>
+    </header>
+
+
+
       <main className="mx-auto max-w-[1960px] p-4">
         {photoId && (
           <Modal
