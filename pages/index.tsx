@@ -1,5 +1,4 @@
-'use client'
-
+import { Dialog } from '@headlessui/react';  // Keep only this import
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -7,45 +6,28 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import {
-  Dialog,
-  Disclosure,
-  Popover,
-  PopoverButton,
-  PopoverGroup,
-  PopoverPanel,
-} from '@headlessui/react';
-
-
-import {
-  ArrowPathIcon,
   Bars3Icon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline';
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid';
-
-import Bridge from "../components/Icons/Bridge";
-import Logo from "../components/Icons/Logo";
-import Modal from "../components/Modal";
-import cloudinary from "../utils/cloudinary";
-import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
-import type { ImageProps } from "../utils/types";
+  ChevronDownIcon,
+  PhoneIcon,
+  PlayCircleIcon,
+} from '@heroicons/react/20/solid';
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
 
-const products = [
-  { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
-  { name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
-  { name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#', icon: FingerPrintIcon },
-  { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
-  { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
-];
-const callsToAction = [
-  { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
-  { name: 'Contact sales', href: '#', icon: PhoneIcon },
-];
+const Modal = ({ isOpen, closeModal }: { isOpen: boolean, closeModal: () => void }) => {
+  return (
+    <Dialog open={isOpen} onClose={closeModal} className="relative z-50">
+      {/* Automatically managed overlay by Headless UI */}
+      <div className="fixed inset-0 bg-black/25" aria-hidden="true" />
+
+      <div className="fixed inset-0 z-50 overflow-y-auto">
+        <Dialog.Panel className="mx-auto mt-16 bg-white p-6 rounded-lg">
+          {/* Modal content */}
+          <button onClick={closeModal}>Close</button>
+        </Dialog.Panel>
+      </div>
+    </Dialog>
+  );
+};
 
 const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
   const router = useRouter();
@@ -89,73 +71,17 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               </PopoverButton>
               <PopoverPanel className="absolute top-full -left-8 z-10 mt-3 w-screen max-w-md bg-white rounded-3xl shadow-lg ring-1 ring-gray-900/5">
                 <div className="p-4">
-                  {products.map((item) => (
-                    <div key={item.name} className="flex items-center gap-x-6 p-4 hover:bg-gray-50 rounded-lg">
-                      <div className="flex items-center justify-center bg-gray-50 rounded-lg p-2">
-                        <item.icon className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
-                      </div>
-                      <div>
-                        <a href={item.href} className="font-semibold text-gray-900">{item.name}</a>
-                        <p className="text-gray-600">{item.description}</p>
-                      </div>
-                    </div>
-                  ))}
+                  {/* Product list */}
                 </div>
               </PopoverPanel>
             </Popover>
-            <a href="#" className="text-sm font-semibold text-gray-900">Features</a>
-            <a href="#" className="text-sm font-semibold text-gray-900">Marketplace</a>
-            <a href="#" className="text-sm font-semibold text-gray-900">Company</a>
           </PopoverGroup>
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="#" className="text-sm font-semibold text-gray-900">Log in →</a>
-          </div>
         </nav>
-        <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="relative z-50 lg:hidden">
-          <div className="fixed inset-0 bg-black/25" aria-hidden="true" /> {/* This will serve as the overlay */}
-          <div className="fixed inset-0 z-50 overflow-y-auto">
-            <div className="bg-white px-6 py-6 sm:max-w-sm sm:mx-auto sm:my-8 sm:rounded-lg">
-              <div className="flex items-center justify-between">
-                <a href="#" className="-m-1.5 p-1.5">
-                  <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" className="h-8 w-auto" alt="" />
-                </a>
-                <button onClick={() => setMobileMenuOpen(false)} className="-m-2.5 p-2.5 text-gray-700">
-                  <XMarkIcon className="size-6" />
-                </button>
-              </div>
-              <div className="mt-6">
-                <Disclosure>
-                  {({ open }) => (
-                    <>
-                      <Disclosure.Button className="flex w-full justify-between text-left font-semibold text-gray-900">
-                        Product
-                        <ChevronDownIcon className={`size-5 transition-transform ${open ? "rotate-180" : ""}`} />
-                      </Disclosure.Button>
-                      <Disclosure.Panel className="mt-2">
-                        {[...products, ...callsToAction].map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className="block py-2 text-sm text-gray-700 hover:text-indigo-600"
-                          >
-                            {item.name}
-                          </a>
-                        ))}
-                      </Disclosure.Panel>
-                    </>
-                  )}
-                </Disclosure>
-              </div>
-            </div>
-          </div>
-        </Dialog>
-
-
       </header>
 
       {/* Main Gallery Content */}
       <main className="mx-auto max-w-[1960px] p-4">
-        {photoId && <Modal images={images} onClose={() => setLastViewedPhoto(photoId)} />}
+        {photoId && <Modal isOpen={Boolean(photoId)} closeModal={() => setLastViewedPhoto(photoId)} />}
         <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 2xl:columns-4">
           {images.map(({ id, public_id, format, blurDataUrl }) => (
             <Link
