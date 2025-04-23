@@ -8,15 +8,14 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import {
   Dialog,
-  DialogPanel,
   Disclosure,
   DisclosureButton,
-  DisclosurePanel,
   Popover,
   PopoverButton,
   PopoverGroup,
   PopoverPanel,
 } from '@headlessui/react';
+
 import {
   ArrowPathIcon,
   Bars3Icon,
@@ -126,22 +125,31 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               </div>
               <div className="mt-6">
                 <Disclosure>
-                  <DisclosureButton className="flex justify-between w-full text-left font-semibold text-gray-900">
-                    Product
-                    <ChevronDownIcon className="size-5 group-data-open:rotate-180" />
-                  </DisclosureButton>
-                  <DisclosurePanel>
-                    {[...products, ...callsToAction].map((item) => (
-                      <DisclosureButton key={item.name} as="a" href={item.href} className="block py-2 text-sm text-gray-700">
-                        {item.name}
-                      </DisclosureButton>
-                    ))}
-                  </DisclosurePanel>
+                  {({ open }) => (
+                    <>
+                      <Disclosure.Button className="flex w-full justify-between text-left font-semibold text-gray-900">
+                        Product
+                        <ChevronDownIcon className={`size-5 transition-transform ${open ? "rotate-180" : ""}`} />
+                      </Disclosure.Button>
+                      <Disclosure.Panel className="mt-2">
+                        {[...products, ...callsToAction].map((item) => (
+                          <a
+                            key={item.name}
+                            href={item.href}
+                            className="block py-2 text-sm text-gray-700 hover:text-indigo-600"
+                          >
+                            {item.name}
+                          </a>
+                        ))}
+                      </Disclosure.Panel>
+                    </>
+                  )}
                 </Disclosure>
               </div>
             </div>
           </div>
         </Dialog>
+
 
       </header>
 
