@@ -112,33 +112,37 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
             <a href="#" className="text-sm font-semibold text-gray-900">Log in →</a>
           </div>
         </nav>
-        <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
-          <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full bg-white px-6 py-6 sm:max-w-sm">
-            <div className="flex items-center justify-between">
-              <a href="#" className="-m-1.5 p-1.5">
-                <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" className="h-8 w-auto" alt="" />
-              </a>
-              <button onClick={() => setMobileMenuOpen(false)} className="-m-2.5 p-2.5 text-gray-700">
-                <XMarkIcon className="size-6" />
-              </button>
+        <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="relative z-50 lg:hidden">
+          <div className="fixed inset-0 bg-black/25" aria-hidden="true" />
+          <div className="fixed inset-0 z-50 overflow-y-auto">
+            <div className="bg-white px-6 py-6 sm:max-w-sm sm:mx-auto sm:my-8 sm:rounded-lg">
+              <div className="flex items-center justify-between">
+                <a href="#" className="-m-1.5 p-1.5">
+                  <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" className="h-8 w-auto" alt="" />
+                </a>
+                <button onClick={() => setMobileMenuOpen(false)} className="-m-2.5 p-2.5 text-gray-700">
+                  <XMarkIcon className="size-6" />
+                </button>
+              </div>
+              <div className="mt-6">
+                <Disclosure>
+                  <DisclosureButton className="flex justify-between w-full text-left font-semibold text-gray-900">
+                    Product
+                    <ChevronDownIcon className="size-5 group-data-open:rotate-180" />
+                  </DisclosureButton>
+                  <DisclosurePanel>
+                    {[...products, ...callsToAction].map((item) => (
+                      <DisclosureButton key={item.name} as="a" href={item.href} className="block py-2 text-sm text-gray-700">
+                        {item.name}
+                      </DisclosureButton>
+                    ))}
+                  </DisclosurePanel>
+                </Disclosure>
+              </div>
             </div>
-            <div className="mt-6">
-              <Disclosure>
-                <DisclosureButton className="flex justify-between w-full text-left font-semibold text-gray-900">
-                  Product
-                  <ChevronDownIcon className="size-5 group-data-open:rotate-180" />
-                </DisclosureButton>
-                <DisclosurePanel>
-                  {[...products, ...callsToAction].map((item) => (
-                    <DisclosureButton key={item.name} as="a" href={item.href} className="block py-2 text-sm text-gray-700">
-                      {item.name}
-                    </DisclosureButton>
-                  ))}
-                </DisclosurePanel>
-              </Disclosure>
-            </div>
-          </DialogPanel>
+          </div>
         </Dialog>
+
       </header>
 
       {/* Main Gallery Content */}
