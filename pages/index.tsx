@@ -64,7 +64,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
   return (
     <>
       <Head>
-        <title>Adidas Photos Collection</title>
+        <title>Adidas Collection</title>
       </Head>
 
       {/* Navigation Header */}
