@@ -112,7 +112,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
           </div>
         </nav>
         <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="relative z-50 lg:hidden">
-          <div className="fixed inset-0 bg-black/25" aria-hidden="true" />
+          <div className="fixed inset-0 bg-black/25" aria-hidden="true" /> {/* This will serve as the overlay */}
           <div className="fixed inset-0 z-50 overflow-y-auto">
             <div className="bg-white px-6 py-6 sm:max-w-sm sm:mx-auto sm:my-8 sm:rounded-lg">
               <div className="flex items-center justify-between">
