@@ -1,9 +1,33 @@
+'use client'
+
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  Dialog,
+  DialogPanel,
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+  Popover,
+  PopoverButton,
+  PopoverGroup,
+  PopoverPanel,
+} from '@headlessui/react';
+import {
+  ArrowPathIcon,
+  Bars3Icon,
+  ChartPieIcon,
+  CursorArrowRaysIcon,
+  FingerPrintIcon,
+  SquaresPlusIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
+import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid';
+
 import Bridge from "../components/Icons/Bridge";
 import Logo from "../components/Icons/Logo";
 import Modal from "../components/Modal";
@@ -12,17 +36,28 @@ import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
 
+const products = [
+  { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
+  { name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
+  { name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#', icon: FingerPrintIcon },
+  { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
+  { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
+];
+const callsToAction = [
+  { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
+  { name: 'Contact sales', href: '#', icon: PhoneIcon },
+];
+
 const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
   const router = useRouter();
   const { photoId } = router.query;
   const [lastViewedPhoto, setLastViewedPhoto] = useLastViewedPhoto();
-
   const lastViewedPhotoRef = useRef<HTMLAnchorElement>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    // This effect keeps track of the last viewed photo in the modal to keep the index page in sync when the user navigates back
     if (lastViewedPhoto && !photoId) {
-      lastViewedPhotoRef.current.scrollIntoView({ block: "center" });
+      lastViewedPhotoRef.current?.scrollIntoView({ block: "center" });
       setLastViewedPhoto(null);
     }
   }, [photoId, lastViewedPhoto, setLastViewedPhoto]);
@@ -30,27 +65,86 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
   return (
     <>
       <Head>
-        <title>Next.js Adidas Photos Collection</title>
-        <meta
-          property="og:image"
-          content="https://nextjsconf-pics.vercel.app/og-image.png"
-        />
-        <meta
-          name="twitter:image"
-          content="https://nextjsconf-pics.vercel.app/og-image.png"
-        />
+        <title>Adidas Photos Collection</title>
       </Head>
-      <main className="mx-auto max-w-[1960px] p-4">
-        {photoId && (
-          <Modal
-            images={images}
-            onClose={() => {
-              setLastViewedPhoto(photoId);
-            }}
-          />
-        )}
-        <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 2xl:columns-4">
 
+      {/* Navigation Header */}
+      <header className="bg-white">
+        <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
+          <div className="flex lg:flex-1">
+            <a href="#" className="-m-1.5 p-1.5">
+              <span className="sr-only">Your Company</span>
+              <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" className="h-8 w-auto" alt="" />
+            </a>
+          </div>
+          <div className="flex lg:hidden">
+            <button onClick={() => setMobileMenuOpen(true)} className="-m-2.5 p-2.5 text-gray-700">
+              <Bars3Icon className="size-6" />
+            </button>
+          </div>
+          <PopoverGroup className="hidden lg:flex lg:gap-x-12">
+            <Popover className="relative">
+              <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold text-gray-900">
+                Product
+                <ChevronDownIcon className="size-5 text-gray-400" />
+              </PopoverButton>
+              <PopoverPanel className="absolute top-full -left-8 z-10 mt-3 w-screen max-w-md bg-white rounded-3xl shadow-lg ring-1 ring-gray-900/5">
+                <div className="p-4">
+                  {products.map((item) => (
+                    <div key={item.name} className="flex items-center gap-x-6 p-4 hover:bg-gray-50 rounded-lg">
+                      <div className="flex items-center justify-center bg-gray-50 rounded-lg p-2">
+                        <item.icon className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
+                      </div>
+                      <div>
+                        <a href={item.href} className="font-semibold text-gray-900">{item.name}</a>
+                        <p className="text-gray-600">{item.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </PopoverPanel>
+            </Popover>
+            <a href="#" className="text-sm font-semibold text-gray-900">Features</a>
+            <a href="#" className="text-sm font-semibold text-gray-900">Marketplace</a>
+            <a href="#" className="text-sm font-semibold text-gray-900">Company</a>
+          </PopoverGroup>
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+            <a href="#" className="text-sm font-semibold text-gray-900">Log in →</a>
+          </div>
+        </nav>
+        <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
+          <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full bg-white px-6 py-6 sm:max-w-sm">
+            <div className="flex items-center justify-between">
+              <a href="#" className="-m-1.5 p-1.5">
+                <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" className="h-8 w-auto" alt="" />
+              </a>
+              <button onClick={() => setMobileMenuOpen(false)} className="-m-2.5 p-2.5 text-gray-700">
+                <XMarkIcon className="size-6" />
+              </button>
+            </div>
+            <div className="mt-6">
+              <Disclosure>
+                <DisclosureButton className="flex justify-between w-full text-left font-semibold text-gray-900">
+                  Product
+                  <ChevronDownIcon className="size-5 group-data-open:rotate-180" />
+                </DisclosureButton>
+                <DisclosurePanel>
+                  {[...products, ...callsToAction].map((item) => (
+                    <DisclosureButton key={item.name} as="a" href={item.href} className="block py-2 text-sm text-gray-700">
+                      {item.name}
+                    </DisclosureButton>
+                  ))}
+                </DisclosurePanel>
+              </Disclosure>
+            </div>
+          </DialogPanel>
+        </Dialog>
+      </header>
+
+      {/* Main Gallery Content */}
+      <main className="mx-auto max-w-[1960px] p-4">
+        {photoId && <Modal images={images} onClose={() => setLastViewedPhoto(photoId)} />}
+        <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 2xl:columns-4">
           {images.map(({ id, public_id, format, blurDataUrl }) => (
             <Link
               key={id}
@@ -58,55 +152,28 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               as={`/p/${id}`}
               ref={id === Number(lastViewedPhoto) ? lastViewedPhotoRef : null}
               shallow
-              className="after:content group relative mb-5 block w-full cursor-zoom-in after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:shadow-highlight"
+              className="group relative mb-5 block w-full cursor-zoom-in after:absolute after:inset-0 after:rounded-lg after:shadow-highlight after:content-['']"
             >
               <Image
                 alt="Next.js Conf photo"
-                className="transform rounded-lg brightness-90 transition will-change-auto group-hover:brightness-110"
-                style={{ transform: "translate3d(0, 0, 0)" }}
+                className="transform rounded-lg brightness-90 transition group-hover:brightness-110"
                 placeholder="blur"
                 blurDataURL={blurDataUrl}
                 src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_720/${public_id}.${format}`}
                 width={720}
                 height={480}
-                sizes="(max-width: 640px) 100vw,
-                  (max-width: 1280px) 50vw,
-                  (max-width: 1536px) 33vw,
-                  25vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, (max-width: 1536px) 33vw, 25vw"
               />
             </Link>
           ))}
         </div>
       </main>
+
       <footer className="p-6 text-center text-white/80 sm:p-12">
         Thank you to{" "}
-        <a
-          href="https://vercel.app/"
-          target="_blank"
-          className="font-semibold hover:text-white"
-          rel="noreferrer"
-        >
-          Vercel.app 
-        </a>
-        ,{" "}
-        <a
-          href="https://www.cloudinary.com/"
-          target="_blank"
-          className="font-semibold hover:text-white"
-          rel="noreferrer"
-        >
-          Cloudinary
-        </a>
-        , and{" "}
-        <a
-          href="https://adidas.co.id/"
-          target="_blank"
-          className="font-semibold hover:text-white"
-          rel="noreferrer"
-        >
-          Adidas
-        </a>{" "}
-        for the pictures.
+        <a href="https://vercel.app/" target="_blank" className="font-semibold hover:text-white" rel="noreferrer">Vercel.app</a>,{" "}
+        <a href="https://www.cloudinary.com/" target="_blank" className="font-semibold hover:text-white" rel="noreferrer">Cloudinary</a>, and{" "}
+        <a href="https://adidas.co.id/" target="_blank" className="font-semibold hover:text-white" rel="noreferrer">Adidas</a> for the pictures.
       </footer>
     </>
   );
@@ -120,23 +187,16 @@ export async function getStaticProps() {
     .sort_by("public_id", "desc")
     .max_results(400)
     .execute();
-  let reducedResults: ImageProps[] = [];
 
-  let i = 0;
-  for (let result of results.resources) {
-    reducedResults.push({
-      id: i,
-      height: result.height,
-      width: result.width,
-      public_id: result.public_id,
-      format: result.format,
-    });
-    i++;
-  }
+  let reducedResults: ImageProps[] = results.resources.map((result, i) => ({
+    id: i,
+    height: result.height,
+    width: result.width,
+    public_id: result.public_id,
+    format: result.format,
+  }));
 
-  const blurImagePromises = results.resources.map((image: ImageProps) => {
-    return getBase64ImageUrl(image);
-  });
+  const blurImagePromises = results.resources.map(getBase64ImageUrl);
   const imagesWithBlurDataUrls = await Promise.all(blurImagePromises);
 
   for (let i = 0; i < reducedResults.length; i++) {
@@ -144,8 +204,6 @@ export async function getStaticProps() {
   }
 
   return {
-    props: {
-      images: reducedResults,
-    },
+    props: { images: reducedResults },
   };
 }
